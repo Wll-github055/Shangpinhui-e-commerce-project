@@ -9,6 +9,10 @@ import router from '@/router'
 
 Vue.config.productionTip = false
 
+
+import {reqCategoryList} from '@/api'
+reqCategoryList()
+
 new Vue({
   render: h => h(App),
   // 注册路由:key-value形式，key和value一致可省略value
