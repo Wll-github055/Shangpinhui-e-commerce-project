@@ -17,7 +17,11 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+  mounted() {
+    // 获取商品分类三级列表数据
+    this.$store.dispatch("home/getCategoryList");
+  },
 }
 </script>
 

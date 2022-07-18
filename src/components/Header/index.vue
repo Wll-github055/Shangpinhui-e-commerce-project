@@ -61,28 +61,19 @@ export default {
     };
   },
   methods: {
-    // 搜索按钮的回调函数，需要向search路由进行跳转
+    // 搜索按钮的回调函数，需要向search路由进行跳转。如果有query参数也一并传过去
     goSearch() {
-      // 路由传递参数
-
-      // 第一种：字符串形式
-      // this.$router.push('/search/'+this.keyword+'?k='+this.keyword)
-
-      // 第二种：模板字符串
-      // this.$router.push(`/search/${this.keyword}?k=${this.keyword}`)
-
-      // 第三种：对象形式
-      this.$router.push(
-        {
-          name: "search",
-          params: {
-            keyword: this.keyword || undefined,
-          },
-          // query:{
-          //   k:this.keyword
-          // }
-        });
+        let location={name: "search",params: {keyword: this.keyword || undefined}}
+        if(this.$route.query){
+          location.query=this.$route.query
+        }
+        this.$router.push(location)
     },
+  },
+  mounted() {
+    this.$bus.$on('clear',()=>{
+      this.keyword=''
+    })
   },
 };
 </script>
