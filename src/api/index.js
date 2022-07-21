@@ -29,3 +29,58 @@ export const reqGetSearchInfo=(params)=>requests({
     data:params
 })
 
+// 获取商品详情 地址：/api/item/{skuid} get 参数：skuId
+export const reqGoodsInfo=(skuId)=>requests({
+    url:`/item/${skuId}`,
+    method:'get'
+})
+
+// 将产品添加到购物车（或者更新某一个产品的个数） 地址：/api/cart/addToCart/{ skuId }/{ skuNum } 请求方式：post 参数：skuId、skuNum
+export const reqAddOrUpdateShorCart=(skuId,skuNum)=>requests({
+    url:`/cart/addToCart/${skuId}/${skuNum}`,
+    method:'post'
+})
+
+//获取购物车列表 地址：/api/cart/cartList 请求方式：get 无参数
+export const reqGetCartList = () => requests({
+    url: '/cart/cartList',
+    method: 'get'
+})
+
+// 删除购物车商品 地址：/api/cart/deleteCart/{skuId} 请求方式：delete 参数：skuId
+export const reqDeleteCartById=(skuId)=>requests({
+    url:`/cart/deleteCart/${skuId}`,
+    method:'delete'
+})
+
+// 切换商品选中状态 地址：/api/cart/checkCart/{skuID}/{isChecked} 请求方式：get 参数：skuID、isChecked
+export const reqUpdateCheckedById=(skuId,isChecked)=>requests({
+    url:`/cart/checkCart/${skuId}/${isChecked}`,
+    method:'get'
+})
+
+// 获取验证码 地址：/api/user/passport/sendCode/{phone} 请求方式：get 参数：phone
+export const reqGetCode=(phone)=>requests({
+    url:`/user/passport/sendCode/${phone}`,
+    method:'get'
+})
+
+// 提交注册 地址：/api/user/passport/register 请求方式：post 参数：phone、password、code
+export const reqUserRegister=(data)=>requests({
+    url:'/user/passport/register',
+    method:'post',
+    data
+})
+
+// 登录
+export const reqUserLogin=(data)=>requests({
+    url:'/user/passport/login',
+    method:'post',
+    data
+})
+
+// 获取用户信息【需要带着用户的token向服务器获取用户信息】
+export const reqUserInfo=()=>requests({
+    url:'/user/passport/auth/getUserInfo',
+    method:'get'
+})

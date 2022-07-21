@@ -5,11 +5,17 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <!-- 用户未登录 -->
+          <p v-if="!userName">
             <span>请</span>
             <!-- 声明式导航：必须指明跳转路径（to属性） -->
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
+          </p>
+          <!-- 登录了 -->
+          <p v-else>
+            <a >{{userName}}</a>
+            <a class="register">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -59,6 +65,11 @@ export default {
     return {
       keyword: "",
     };
+  },
+  computed:{
+    userName(){
+      return this.$store.state.user.userInfo.name
+    }
   },
   methods: {
     // 搜索按钮的回调函数，需要向search路由进行跳转。如果有query参数也一并传过去

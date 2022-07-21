@@ -10,6 +10,9 @@ import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
+import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 // 先把VueRouter原型对象的push保存一份
 let originPush=VueRouter.prototype.push
@@ -58,7 +61,30 @@ export default new VueRouter({
             name:'search',
             path: '/search/:keyword?',
             component: Search,
-            meta: { show: true },
+            meta: { show: true },  
         },
-    ]
+        {
+            name: 'detail',
+            path:'/detail/:goodId',
+            component:Detail,
+            meta:{show:true}
+        },
+        {
+            name: 'AddCartSuccess',
+            path: '/AddCartSuccess',
+            component: AddCartSuccess,
+            meta: { show: true }
+        },
+        {
+            name: 'ShopCart',
+            path: '/ShopCart',
+            component: ShopCart,
+            meta: { show: true }
+        }
+        
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        // 始终滚动到顶部
+        return { y: 0 }
+    },
 })
