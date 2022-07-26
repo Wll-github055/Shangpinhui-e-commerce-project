@@ -13,6 +13,17 @@ import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+
+// 引入二级路由
+import myOrder from '@/pages/Center/myOrder'
+import groupOrder from '@/pages/Center/groupOrder'
+
+// 引入store
+import store from '@/store'
 
 // 先把VueRouter原型对象的push保存一份
 let originPush=VueRouter.prototype.push
@@ -33,14 +44,18 @@ VueRouter.prototype.replace = function (to, resolve, reject) {
         originReplace.call(this, to, () => { }, () => { })
     }
 }
-
 // 配置路由
-export default new VueRouter({
+let router = new VueRouter({
     routes:[
         // 重定向，在项目刚运行的时候，访问/，立马定向到首页
         {
             path:'/',
             redirect:'/home',
+        },
+        // 重定向，在进入个人中心时，里面定向到myOrder
+        {
+            path: '/center',
+            redirect: '/center/myorder',
         },
         {
             path:'/home',
@@ -70,21 +85,88 @@ export default new VueRouter({
             meta:{show:true}
         },
         {
-            name: 'AddCartSuccess',
-            path: '/AddCartSuccess',
+            name: 'addcartsuccess',
+            path: '/addcartsuccess',
             component: AddCartSuccess,
             meta: { show: true }
         },
         {
-            name: 'ShopCart',
-            path: '/ShopCart',
+            name: 'shopcart',
+            path: '/shopcart',
             component: ShopCart,
             meta: { show: true }
+        },
+        {
+            name: 'trade',
+            path: '/trade',
+            component: Trade,
+            meta: { show: true }
+        },
+        {
+            name: 'pay',
+            path: '/pay',
+            component: Pay,
+            meta: { show: true }
+        },
+        {
+            name: 'paysuccess',
+            path: '/paysuccess',
+            component: PaySuccess,
+            meta: { show: true }
+        },
+        {
+            name: 'center',
+            path: '/center',
+            component: Center,
+            meta: { show: true },
+            children:[
+                {
+                    name:'myorder',
+                    path:'myorder',
+                    component:myOrder
+                },
+                {
+                    name: 'grouporder',
+                    path: 'grouporder',
+                    component: groupOrder
+                },
+            ]
         }
-        
     ],
     scrollBehavior(to, from, savedPosition) {
         // 始终滚动到顶部
         return { y: 0 }
     },
 })
+
+// 全局守卫：前置守卫（在路由跳转之前进行判断）
+router.beforeEach(async(to,from,next)=>{
+    let token=store.state.user.token
+    let name=store.state.user.userInfo.name
+    if(token){
+        // 已经登录了，想去login，让它停在首页
+        if(to.path ==='/login'){
+            next('/home')
+        }else{
+            // 登陆了，去的不是login
+            // 若果已经有用户信息
+            if(name){
+                next()
+            }else{
+                // 没有用户信息，派发action让仓库存储用户信息再跳转
+                try {
+                    await store.dispatch('user/getUserInfo')
+                    next()
+                } catch (error) {
+                    // token失效了  清除token，重新登录
+                    await store.dispatch('user/userLogOut')
+                    next('/login')
+                }
+            }
+        }
+    }else{
+        next()
+    }
+})
+
+export default router

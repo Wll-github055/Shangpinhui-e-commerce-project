@@ -380,7 +380,7 @@ export default {
         // 路由跳转 下面这种传递参数的方式是可以的，就是地址栏会不美观
         // this.$router.push({name:'AddCartSuccess',query:{skuInfo:this.skuInfo,skuNum:this.goodNum}})
         sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
-        this.$router.push({name:'AddCartSuccess',query:{skuNum:this.goodNum}})
+        this.$router.push({name:'addcartsuccess',query:{skuNum:this.goodNum}})
       } catch (error) {
         alert(error.message)
       }

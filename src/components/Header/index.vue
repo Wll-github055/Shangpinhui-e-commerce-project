@@ -15,7 +15,7 @@
           <!-- 登录了 -->
           <p v-else>
             <a >{{userName}}</a>
-            <a class="register">退出登录</a>
+            <a class="register" @click="logOut">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -80,6 +80,17 @@ export default {
         }
         this.$router.push(location)
     },
+    async logOut(){
+      // 1.发请求，通知服务器退出登录
+      // 2.清除用户的数据userInfo、token
+      try {
+        await this.$store.dispatch('user/userLogOut')
+        this.$router.push('/home')
+      } catch (error) {
+        alert(error.message)
+      }
+      
+    }
   },
   mounted() {
     this.$bus.$on('clear',()=>{

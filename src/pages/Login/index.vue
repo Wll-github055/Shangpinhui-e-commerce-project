@@ -25,7 +25,7 @@
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
-                  <input name="m1" type="checkbox" value="2" checked="">
+                  <input name="m1" type="checkbox" value="2" v-model="isCheckedAutoLogin" @change="isCheckedAutoLogin?userLogin():''">
                   自动登录
                 </label>
                 <span class="forget">忘记密码？</span>
@@ -71,15 +71,18 @@
     data() {
       return {
         phone:'',
-        password:''
+        password:'',
+        isCheckedAutoLogin:false
       }
     },
     methods: {
       async userLogin(){
         try {
           const {phone,password} = this;
-          (phone && password) && await this.$store.dispatch('user/userLogin',{phone,password});
-          this.$router.push('/home')
+          if(phone && password){
+            await this.$store.dispatch('user/userLogin',{phone,password});
+            this.$router.push('/home')
+          }
         } catch (error) {
           alert(error.message)
         }

@@ -84,3 +84,41 @@ export const reqUserInfo=()=>requests({
     url:'/user/passport/auth/getUserInfo',
     method:'get'
 })
+
+// 退出登录 
+export const reqLogOut=()=>requests({
+    url:'/user/passport/logout',
+    method:'get'
+})
+
+// 获取用户地址信息 地址：/api/user/userAddress/auth/findUserAddressList
+export const reqUserAddressInfo=()=>requests({
+    url:'/user/userAddress/auth/findUserAddressList',
+    method:'get'
+})
+
+// 获取交易页订单信息 地址：/api/order/auth/trade
+export const reqOrderInfo=()=>requests({
+    url:'/order/auth/trade',
+    method:'get'
+})
+
+// 提交订单 地址：/api/order/auth/submitOrder?tradeNo={tradeNo} 请求方式：post  既有query参数又有params参数
+export const reqSubmitOrder=(tradeNo,data)=>requests({
+    url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method:'post',
+    data
+})
+
+// 获取支付信息 请求方式：get
+export const reqPayInfo=(orderId)=>requests({
+    url:`/payment/weixin/createNative/${orderId}`,
+    method:'get'
+})
+
+// 获取支付状态 请求方式：get
+
+export const reqPayStatus = (orderId) => requests({
+    url: `/payment/weixin/queryPayStatus/${orderId}`,
+    method: 'get'
+})

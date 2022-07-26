@@ -1,5 +1,5 @@
 // 用户小仓库
-import { reqGetCode, reqUserRegister, reqUserLogin,reqUserInfo } from '@/api'
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo, reqLogOut } from '@/api'
 
 const actions={
     async getCode(context,phone){
@@ -32,6 +32,18 @@ const actions={
         let result=await reqUserInfo()
         if(result.code === 200){
             context.commit('GETUSERINFO',result.data)
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('fail'))
+        }
+    },
+    async userLogOut(context){
+        let result=await reqLogOut()
+        if(result.code===200){
+            context.commit('CLEARUSERINFO')
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('fail'))
         }
     }
 
@@ -45,6 +57,12 @@ const mutations={
     },
     GETUSERINFO(state,userInfo){
         state.userInfo=userInfo
+    },
+    CLEARUSERINFO(state){
+        // 清除用户信息
+        state.token=''
+        state.userInfo={}
+        localStorage.removeItem('token')
     }
 }
 const state={
