@@ -100,13 +100,30 @@ let router = new VueRouter({
             name: 'trade',
             path: '/trade',
             component: Trade,
-            meta: { show: true }
+            meta: { show: true },
+            // 路由独享守卫
+            beforeEnter:(to, from, next)=> {
+                // 去交易页面，必须是从购物车而来
+                if(from.path === '/shopcart'){
+                    next()
+                }else{
+                    // 如果是从其他路由组件而来，则停留在当前页面
+                    next(false)
+                }
+            }
         },
         {
             name: 'pay',
             path: '/pay',
             component: Pay,
-            meta: { show: true }
+            meta: { show: true },
+            beforeEnter:(to,from,next)=>{
+                if(from.path === '/trade'){
+                    next()
+                }else{
+                    next(false)
+                }
+            }
         },
         {
             name: 'paysuccess',
@@ -165,7 +182,13 @@ router.beforeEach(async(to,from,next)=>{
             }
         }
     }else{
-        next()
+        // 用户未登录时的业务逻辑
+        let toPath=to.path
+        if(toPath.includes('/trade') || toPath.includes('/pay') || toPath.includes('/center')){
+            next('/login?redirect='+toPath)
+        }else{
+            next()
+        }
     }
 })
 

@@ -81,7 +81,10 @@
           const {phone,password} = this;
           if(phone && password){
             await this.$store.dispatch('user/userLogin',{phone,password});
-            this.$router.push('/home')
+            // 登录的路由组件：看路由中是否有query参数，如果有，则跳转到指定路由；没有，就跳转到home
+            let toPath=this.$route.query.redirect
+            toPath=toPath?toPath:'/home'
+            this.$router.push(toPath)
           }
         } catch (error) {
           alert(error.message)
