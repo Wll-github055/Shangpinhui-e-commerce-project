@@ -5,25 +5,8 @@ import VueRouter from 'vue-router'
 // 使用插件
 Vue.use(VueRouter)
 
-// 引入路由组件
-import Home from '@/pages/Home'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Search from '@/pages/Search'
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
-import Trade from '@/pages/Trade'
-import Pay from '@/pages/Pay'
-import PaySuccess from '@/pages/PaySuccess'
-import Center from '@/pages/Center'
-
-// 引入二级路由
-import myOrder from '@/pages/Center/myOrder'
-import groupOrder from '@/pages/Center/groupOrder'
-
 // 引入store
-import store from '@/store'
+import store from '@/store' 
 
 // 先把VueRouter原型对象的push保存一份
 let originPush=VueRouter.prototype.push
@@ -59,52 +42,52 @@ let router = new VueRouter({
         },
         {
             path:'/home',
-            component:Home,
+            component: () => import('@/pages/Home'), // 使用路由懒加载
             meta:{show:true}
         },
         {
             path: '/login',
-            component: Login,
+            component: () => import('@/pages/Login'),
             meta: { show: false }
         },
         {
             path: '/register',
-            component: Register,
+            component: () => import('@/pages/Register'),
             meta: { show: false }
         },
         {
             name:'search',
             path: '/search/:keyword?',
-            component: Search,
+            component: () => import('@/pages/Search'),
             meta: { show: true },  
         },
         {
             name: 'detail',
             path:'/detail/:goodId',
-            component:Detail,
+            component: () => import('@/pages/Detail'),
             meta:{show:true}
         },
         {
             name: 'addcartsuccess',
             path: '/addcartsuccess',
-            component: AddCartSuccess,
+            component: () => import('@/pages/AddCartSuccess'),
             meta: { show: true }
         },
         {
             name: 'shopcart',
             path: '/shopcart',
-            component: ShopCart,
+            component: () => import('@/pages/ShopCart'),
             meta: { show: true }
         },
         {
             name: 'trade',
             path: '/trade',
-            component: Trade,
+            component: () => import('@/pages/Trade'),
             meta: { show: true },
             // 路由独享守卫
             beforeEnter:(to, from, next)=> {
-                // 去交易页面，必须是从购物车而来
-                if(from.path === '/shopcart'){
+                // 去交易页面，必须是从购物车而来（或者登陆界面）
+                if (from.path === '/shopcart' || from.path === '/login'){
                     next()
                 }else{
                     // 如果是从其他路由组件而来，则停留在当前页面
@@ -115,7 +98,7 @@ let router = new VueRouter({
         {
             name: 'pay',
             path: '/pay',
-            component: Pay,
+            component: () => import('@/pages/Pay'),
             meta: { show: true },
             beforeEnter:(to,from,next)=>{
                 if(from.path === '/trade'){
@@ -128,24 +111,24 @@ let router = new VueRouter({
         {
             name: 'paysuccess',
             path: '/paysuccess',
-            component: PaySuccess,
+            component: () => import('@/pages/PaySuccess'),
             meta: { show: true }
         },
         {
             name: 'center',
             path: '/center',
-            component: Center,
+            component: () => import('@/pages/Center'),
             meta: { show: true },
             children:[
                 {
                     name:'myorder',
                     path:'myorder',
-                    component:myOrder
+                    component: () => import('@/pages/Center/myOrder')
                 },
                 {
                     name: 'grouporder',
                     path: 'grouporder',
-                    component: groupOrder
+                    component: () => import('@/pages/Center/groupOrder')
                 },
             ]
         }

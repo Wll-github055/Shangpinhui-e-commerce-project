@@ -10,7 +10,6 @@ Vue.component(TypeNav.name,TypeNav) // Vue.component()第一个参数：全局�
 Vue.component(Carousel.name,Carousel)
 Vue.component(Pagination.name,Pagination)
 
-
 import router from '@/router'
 import store from '@/store'
 import '@/mock/mockServer'  //引入mockServer.js
@@ -18,6 +17,17 @@ import 'swiper/css/swiper.css'
 
 // 统一接口api文件夹里面全部请求函数
 import * as API from '@/api'
+
+import defaultImg from '@/assets/default.gif'
+
+// 引入vue-lazyload插件
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload,{
+  // 懒加载默认的图片
+  loading:defaultImg
+})
+// 引入表单校验插件
+import "@/plugins/validate";
 
 Vue.config.productionTip = false
 

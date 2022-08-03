@@ -2,9 +2,8 @@
 import { reqGetSearchInfo } from '@/api'
 
 const actions={
-    async getSearchList(context,params={}){
-        let result=await reqGetSearchInfo(params)
-        console.log(result);
+    async getSearchList(context,data={}){
+        let result=await reqGetSearchInfo(data)
         if(result.code===200){
             context.commit('GETSEARCHLIST',result.data)
         }

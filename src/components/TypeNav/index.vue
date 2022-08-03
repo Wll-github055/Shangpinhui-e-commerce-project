@@ -109,11 +109,12 @@ export default {
         }else if(category3id){
           query.category3Id=category3id
         }
-        // 整理完参数，进行路由跳转。注意：如果路由跳转时还带有params参数，也一起传过去
-        location.params=this.$route.params
+        location.query=query
+        // 注意：如果路由跳转时还带有params参数，也一起传过去
         if(this.$route.params){
-          location.query=query
+          location.params=this.$route.params
         }
+        // 整理完参数，进行路由跳转。
         this.$router.push(location)
       }
     },
@@ -188,7 +189,6 @@ export default {
           }
 
           .item-list {
-            // display: none;
             position: absolute;
             width: 734px;
             min-height: 460px;
@@ -238,12 +238,6 @@ export default {
                   }
                 }
               }
-            }
-          }
-
-          &:hover {
-            .item-list {
-              display: block;
             }
           }
         }
